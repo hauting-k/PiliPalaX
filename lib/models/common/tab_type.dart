@@ -73,7 +73,6 @@ List tabsConfig = [
     ),
     'label': '空白',
     'type': TabType.blank,
-    'ctr': null, // 空白页面不需要控制器
     'page': const BlankPage(),
   },
 ];
