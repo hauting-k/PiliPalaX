@@ -6,11 +6,13 @@ import 'package:PiliPalaX/pages/hot/index.dart';
 import 'package:PiliPalaX/pages/live/index.dart';
 import 'package:PiliPalaX/pages/rcmd/index.dart';
 
-enum TabType { live, rcmd, hot, rank, bangumi }
+enum TabType { live, rcmd, hot, rank, bangumi, blank }
 
 extension TabTypeDesc on TabType {
-  String get description => ['直播', '推荐', '热门', '分区', '番剧'][index];
-  String get id => ['live', 'rcmd', 'hot', 'rank', 'bangumi'][index];
+  String get description =>
+      ['直播', '推荐', '热门', '分区', '番剧', '空白'][index];
+  String get id =>
+      ['live', 'rcmd', 'hot', 'rank', 'bangumi', 'blank'][index];
 }
 
 List tabsConfig = [
@@ -64,4 +66,26 @@ List tabsConfig = [
     'ctr': Get.find<BangumiController>,
     'page': const BangumiPage(),
   },
+  {
+    'icon': const Icon(
+      Icons.space_bar,
+      size: 15,
+    ),
+    'label': '空白',
+    'type': TabType.blank,
+    'ctr': null, // 空白页面不需要控制器
+    'page': const BlankPage(),
+  },
 ];
+
+/// 定义空白页面
+class BlankPage extends StatelessWidget {
+  const BlankPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const Scaffold(
+      body: SizedBox.shrink(), // 完全空白
+    );
+  }
+}
