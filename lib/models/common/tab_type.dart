@@ -15,9 +15,6 @@ extension TabTypeDesc on TabType {
       ['live', 'rcmd', 'hot', 'rank', 'bangumi', 'blank'][index];
 }
 
-/// 空实现的控制器，避免空引用问题
-class EmptyController extends GetxController {}
-
 List tabsConfig = [
   {
     'icon': const Icon(
@@ -26,7 +23,7 @@ List tabsConfig = [
     ),
     'label': '直播',
     'type': TabType.live,
-    'ctr': Get.find<LiveController>(),
+    'ctr': Get.find<LiveController>,
     'page': const RcmdPage(tabType: TabType.live),
   },
   {
@@ -36,7 +33,7 @@ List tabsConfig = [
     ),
     'label': '推荐',
     'type': TabType.rcmd,
-    'ctr': Get.find<RcmdController>(),
+    'ctr': Get.find<RcmdController>,
     'page': const RcmdPage(tabType: TabType.rcmd),
   },
   {
@@ -46,7 +43,7 @@ List tabsConfig = [
     ),
     'label': '热门',
     'type': TabType.hot,
-    'ctr': Get.find<HotController>(),
+    'ctr': Get.find<HotController>,
     'page': const HotPage(),
   },
   {
@@ -56,7 +53,7 @@ List tabsConfig = [
     ),
     'label': '分区',
     'type': TabType.rank,
-    'ctr': Get.find<RankController>(),
+    'ctr': Get.find<RankController>,
     'page': const RankPage(),
   },
   {
@@ -66,7 +63,7 @@ List tabsConfig = [
     ),
     'label': '番剧',
     'type': TabType.bangumi,
-    'ctr': Get.find<BangumiController>(),
+    'ctr': Get.find<BangumiController>,
     'page': const BangumiPage(),
   },
   {
@@ -76,7 +73,7 @@ List tabsConfig = [
     ),
     'label': '空白',
     'type': TabType.blank,
-    'ctr': Get.put(EmptyController()), // 使用空实现的控制器
+    'ctr': null, // 空白页面不需要控制器
     'page': const BlankPage(),
   },
 ];
