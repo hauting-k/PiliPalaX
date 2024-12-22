@@ -44,12 +44,12 @@ jobs:
             echo keyPassword='${{ secrets.KEY_PASSWORD }}' >> android/key.properties
           fi
 
-      - name: flutter build apk
-        run: flutter build apk --release --target-platform=android-arm64
-
-      - name: 上传
+      - name: flutter build apk (v8a only)
+        run: flutter build apk --release --target-platform android-arm64
+          
+      - name: Upload release
+        if: success()
         uses: actions/upload-artifact@v4
         with:
           name: app-release
-          path: |
-            build/app/outputs/flutter-apk/app-release.apk
+          path: "build/app/outputs/flutter-apk/*.apk"
