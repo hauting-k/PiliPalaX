@@ -726,7 +726,7 @@ class _VideoDetailPageState extends State<VideoDetailPage>
                 //             child: Divider(
                 //               indent: 12,
                 //               endIndent: 12,
-                //               color: Theme.of(context).dividerColor.withValues(alpha: 0.06),
+                //               color: Theme.of(context).dividerColor.withOpacity(0.06),
                 //             ),
                 //           ),
                 //           const RelatedVideoPanel(),
@@ -892,7 +892,7 @@ class _VideoDetailPageState extends State<VideoDetailPage>
         () => !videoDetailController.autoPlay.value
             ? const SizedBox()
             : PLVideoPlayer(
-                controller: plPlayerController!,
+                plPlayerController: plPlayerController!,
                 videoIntroController:
                     videoDetailController.videoType == SearchType.video
                         ? videoIntroController
@@ -936,38 +936,73 @@ class _VideoDetailPageState extends State<VideoDetailPage>
                   primary: false,
                   foregroundColor: Colors.white,
                   backgroundColor: Colors.transparent,
-                  actions: videoDetailController.userInfo == null
-                      ? null
-                      : [
-                          PopupMenuButton<String>(
-                            onSelected: (String type) async {
-                              switch (type) {
-                                case 'later':
-                                  var res = await UserHttp.toViewLater(
-                                      bvid: videoDetailController.bvid);
-                                  SmartDialog.showToast(res['msg']);
-                                  break;
-                                case 'report':
-                                  Get.toNamed('/webviewnew', parameters: {
-                                    'url':
-                                        'https://www.bilibili.com/appeal/?avid=${IdUtils.bv2av(videoDetailController.bvid)}&bvid=${videoDetailController.bvid}'
-                                  });
-                                  break;
-                              }
-                            },
-                            itemBuilder: (BuildContext context) =>
-                                <PopupMenuEntry<String>>[
-                              const PopupMenuItem<String>(
-                                value: 'later',
-                                child: Text('稍后再看'),
-                              ),
-                              const PopupMenuItem<String>(
-                                value: 'report',
-                                child: Text('举报'),
-                              ),
-                            ],
-                          ),
-                        ],
+                  // automaticallyImplyLeading: false,
+                  // title: Row(
+                  //   children: [
+                  //     SizedBox(
+                  //       width: 42,
+                  //       height: 34,
+                  //       child: IconButton(
+                  //         tooltip: '返回',
+                  //         icon: const Icon(
+                  //           FontAwesomeIcons.arrowLeft,
+                  //           size: 15,
+                  //           color: Colors.white,
+                  //         ),
+                  //         onPressed: Get.back,
+                  //       ),
+                  //     ),
+                  //     SizedBox(
+                  //       width: 42,
+                  //       height: 34,
+                  //       child: IconButton(
+                  //         tooltip: '返回主页',
+                  //         icon: const Icon(
+                  //           FontAwesomeIcons.house,
+                  //           size: 15,
+                  //           color: Colors.white,
+                  //         ),
+                  //         onPressed: () {
+                  //           Get.until((route) => route.isFirst);
+                  //         },
+                  //       ),
+                  //     ),
+                  //   ],
+                  // ),
+                  actions: [
+                    PopupMenuButton<String>(
+                      onSelected: (String type) async {
+                        switch (type) {
+                          case 'later':
+                            var res = await UserHttp.toViewLater(
+                                bvid: videoDetailController.bvid);
+                            SmartDialog.showToast(res['msg']);
+                            break;
+                          case 'report':
+                            if (videoDetailController.userInfo == null) {
+                              SmartDialog.showToast('账号未登录');
+                            } else {
+                              Get.toNamed('/webviewnew', parameters: {
+                                'url':
+                                    'https://www.bilibili.com/appeal/?avid=${IdUtils.bv2av(videoDetailController.bvid)}&bvid=${videoDetailController.bvid}'
+                              });
+                            }
+                            break;
+                        }
+                      },
+                      itemBuilder: (BuildContext context) =>
+                          <PopupMenuEntry<String>>[
+                        const PopupMenuItem<String>(
+                          value: 'later',
+                          child: Text('稍后再看'),
+                        ),
+                        const PopupMenuItem<String>(
+                          value: 'report',
+                          child: Text('举报'),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
               Positioned(
@@ -998,7 +1033,7 @@ class _VideoDetailPageState extends State<VideoDetailPage>
                       plPlayerController!.videoController == null
                   ? nil
                   : PLVideoPlayer(
-                      controller: plPlayerController!,
+                      plPlayerController: plPlayerController!,
                       videoIntroController:
                           videoDetailController.videoType == SearchType.video
                               ? videoIntroController
@@ -1112,7 +1147,7 @@ class _VideoDetailPageState extends State<VideoDetailPage>
         border: Border(
           bottom: BorderSide(
             width: 1,
-            color: Theme.of(context).dividerColor.withValues(alpha: 0.1),
+            color: Theme.of(context).dividerColor.withOpacity(0.1),
           ),
         ),
       ),
@@ -1271,7 +1306,7 @@ class _VideoDetailPageState extends State<VideoDetailPage>
                   height: 1,
                   indent: 12,
                   endIndent: 12,
-                  color: Theme.of(context).dividerColor.withValues(alpha: 0.06),
+                  color: Theme.of(context).dividerColor.withOpacity(0.06),
                 ),
               ),
             ),
@@ -1445,9 +1480,7 @@ class _VideoDetailPageState extends State<VideoDetailPage>
                     if (rawIndex % 2 == 1) {
                       return Divider(
                         height: 1,
-                        color: Theme.of(context)
-                            .dividerColor
-                            .withValues(alpha: 0.1),
+                        color: Theme.of(context).dividerColor.withOpacity(0.1),
                       );
                     }
                     int index = rawIndex ~/ 2;
